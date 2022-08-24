@@ -44,8 +44,9 @@
 //
 //*****************************************************************************
 #define SYSTICK_RELOAD_1_SEC        0x00f423ff  // Reload Value for 1 sec for clk freq 16 Mhz
-#define SYSTICK_RELOAD_1_Ms        0x00003e7f  //Reload Value for 1 ms   for clk freq 16 Mhz
-
+#define SYSTICK_RELOAD_1_Ms         0x00003e7f  //Reload Value for 1 ms   for clk freq 16 Mhz
+//#define SYSTICK_RELOAD_1_SEC          0x00b71aff  // Reload Value for 1 sec for clk freq 12 Mhz
+//#define SYSTICK_RELOAD_1_Ms           0x00002edf  //Reload Value for 1 ms   for clk freq 12 Mhz
 //*****************************************************************************
 //
 // The following are defines for the bit fields in the NVIC_ST_CURRENT
