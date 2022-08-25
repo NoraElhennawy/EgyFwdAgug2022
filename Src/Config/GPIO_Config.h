@@ -2,10 +2,10 @@
 
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  <Write File Name>
+ *         File:  <GPIO_Config>
  *       Module:  -
  *
- *  Description:  <Write File DESCRIPTION here>     
+ *  Description:  <contain macro defines for gpio port configuration>     
  *  
  *********************************************************************************************************************/
 #ifndef __GPIO_Config_H__
@@ -15,194 +15,10 @@
  * INCLUDES
  *********************************************************************************************************************/
 #include<stdint.h>
-#include <TM4C123GH6PM.h>
+//#include <TM4C123GH6PM.h>
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
-/*****************************************************************************
-//
-// GPIO registers (PORTA)
-//
-*****************************************************************************/
-#define GPIO_PORTA_DATA_BITS_R  ((volatile uint32_t *)0x40004000)
-#define GPIO_PORTA_DATA_R       (*((volatile uint32_t *)0x400043FC))
-#define GPIO_PORTA_DIR_R        (*((volatile uint32_t *)0x40004400))
-#define GPIO_PORTA_IS_R         (*((volatile uint32_t *)0x40004404))
-#define GPIO_PORTA_IBE_R        (*((volatile uint32_t *)0x40004408))
-#define GPIO_PORTA_IEV_R        (*((volatile uint32_t *)0x4000440C))
-#define GPIO_PORTA_IM_R         (*((volatile uint32_t *)0x40004410))
-#define GPIO_PORTA_RIS_R        (*((volatile uint32_t *)0x40004414))
-#define GPIO_PORTA_MIS_R        (*((volatile uint32_t *)0x40004418))
-#define GPIO_PORTA_ICR_R        (*((volatile uint32_t *)0x4000441C))
-#define GPIO_PORTA_AFSEL_R      (*((volatile uint32_t *)0x40004420))
-#define GPIO_PORTA_DR2R_R       (*((volatile uint32_t *)0x40004500))
-#define GPIO_PORTA_DR4R_R       (*((volatile uint32_t *)0x40004504))
-#define GPIO_PORTA_DR8R_R       (*((volatile uint32_t *)0x40004508))
-#define GPIO_PORTA_ODR_R        (*((volatile uint32_t *)0x4000450C))
-#define GPIO_PORTA_PUR_R        (*((volatile uint32_t *)0x40004510))
-#define GPIO_PORTA_PDR_R        (*((volatile uint32_t *)0x40004514))
-#define GPIO_PORTA_SLR_R        (*((volatile uint32_t *)0x40004518))
-#define GPIO_PORTA_DEN_R        (*((volatile uint32_t *)0x4000451C))
-#define GPIO_PORTA_LOCK_R       (*((volatile uint32_t *)0x40004520))
-#define GPIO_PORTA_CR_R         (*((volatile uint32_t *)0x40004524))
-#define GPIO_PORTA_AMSEL_R      (*((volatile uint32_t *)0x40004528))
-#define GPIO_PORTA_PCTL_R       (*((volatile uint32_t *)0x4000452C))
-#define GPIO_PORTA_ADCCTL_R     (*((volatile uint32_t *)0x40004530))
-#define GPIO_PORTA_DMACTL_R     (*((volatile uint32_t *)0x40004534))
-
-/*****************************************************************************
-//
-// GPIO registers (PORTB)
-//
-*****************************************************************************/
-#define GPIO_PORTB_DATA_BITS_R  ((volatile uint32_t *)0x40005000)
-#define GPIO_PORTB_DATA_R       (*((volatile uint32_t *)0x400053FC))
-#define GPIO_PORTB_DIR_R        (*((volatile uint32_t *)0x40005400))
-#define GPIO_PORTB_IS_R         (*((volatile uint32_t *)0x40005404))
-#define GPIO_PORTB_IBE_R        (*((volatile uint32_t *)0x40005408))
-#define GPIO_PORTB_IEV_R        (*((volatile uint32_t *)0x4000540C))
-#define GPIO_PORTB_IM_R         (*((volatile uint32_t *)0x40005410))
-#define GPIO_PORTB_RIS_R        (*((volatile uint32_t *)0x40005414))
-#define GPIO_PORTB_MIS_R        (*((volatile uint32_t *)0x40005418))
-#define GPIO_PORTB_ICR_R        (*((volatile uint32_t *)0x4000541C))
-#define GPIO_PORTB_AFSEL_R      (*((volatile uint32_t *)0x40005420))
-#define GPIO_PORTB_DR2R_R       (*((volatile uint32_t *)0x40005500))
-#define GPIO_PORTB_DR4R_R       (*((volatile uint32_t *)0x40005504))
-#define GPIO_PORTB_DR8R_R       (*((volatile uint32_t *)0x40005508))
-#define GPIO_PORTB_ODR_R        (*((volatile uint32_t *)0x4000550C))
-#define GPIO_PORTB_PUR_R        (*((volatile uint32_t *)0x40005510))
-#define GPIO_PORTB_PDR_R        (*((volatile uint32_t *)0x40005514))
-#define GPIO_PORTB_SLR_R        (*((volatile uint32_t *)0x40005518))
-#define GPIO_PORTB_DEN_R        (*((volatile uint32_t *)0x4000551C))
-#define GPIO_PORTB_LOCK_R       (*((volatile uint32_t *)0x40005520))
-#define GPIO_PORTB_CR_R         (*((volatile uint32_t *)0x40005524))
-#define GPIO_PORTB_AMSEL_R      (*((volatile uint32_t *)0x40005528))
-#define GPIO_PORTB_PCTL_R       (*((volatile uint32_t *)0x4000552C))
-#define GPIO_PORTB_ADCCTL_R     (*((volatile uint32_t *)0x40005530))
-#define GPIO_PORTB_DMACTL_R     (*((volatile uint32_t *)0x40005534))
-
-/*****************************************************************************
-//
-// GPIO registers (PORTC)
-//
-*****************************************************************************/
-#define GPIO_PORTC_DATA_BITS_R  ((volatile uint32_t *)0x40006000)
-#define GPIO_PORTC_DATA_R       (*((volatile uint32_t *)0x400063FC))
-#define GPIO_PORTC_DIR_R        (*((volatile uint32_t *)0x40006400))
-#define GPIO_PORTC_IS_R         (*((volatile uint32_t *)0x40006404))
-#define GPIO_PORTC_IBE_R        (*((volatile uint32_t *)0x40006408))
-#define GPIO_PORTC_IEV_R        (*((volatile uint32_t *)0x4000640C))
-#define GPIO_PORTC_IM_R         (*((volatile uint32_t *)0x40006410))
-#define GPIO_PORTC_RIS_R        (*((volatile uint32_t *)0x40006414))
-#define GPIO_PORTC_MIS_R        (*((volatile uint32_t *)0x40006418))
-#define GPIO_PORTC_ICR_R        (*((volatile uint32_t *)0x4000641C))
-#define GPIO_PORTC_AFSEL_R      (*((volatile uint32_t *)0x40006420))
-#define GPIO_PORTC_DR2R_R       (*((volatile uint32_t *)0x40006500))
-#define GPIO_PORTC_DR4R_R       (*((volatile uint32_t *)0x40006504))
-#define GPIO_PORTC_DR8R_R       (*((volatile uint32_t *)0x40006508))
-#define GPIO_PORTC_ODR_R        (*((volatile uint32_t *)0x4000650C))
-#define GPIO_PORTC_PUR_R        (*((volatile uint32_t *)0x40006510))
-#define GPIO_PORTC_PDR_R        (*((volatile uint32_t *)0x40006514))
-#define GPIO_PORTC_SLR_R        (*((volatile uint32_t *)0x40006518))
-#define GPIO_PORTC_DEN_R        (*((volatile uint32_t *)0x4000651C))
-#define GPIO_PORTC_LOCK_R       (*((volatile uint32_t *)0x40006520))
-#define GPIO_PORTC_CR_R         (*((volatile uint32_t *)0x40006524))
-#define GPIO_PORTC_AMSEL_R      (*((volatile uint32_t *)0x40006528))
-#define GPIO_PORTC_PCTL_R       (*((volatile uint32_t *)0x4000652C))
-#define GPIO_PORTC_ADCCTL_R     (*((volatile uint32_t *)0x40006530))
-#define GPIO_PORTC_DMACTL_R     (*((volatile uint32_t *)0x40006534))
-
-// *****************************************************************************
-//
-// GPIO registers (PORTD)
-//
-// *****************************************************************************
-#define GPIO_PORTD_DATA_BITS_R  ((volatile uint32_t *)0x40007000)
-#define GPIO_PORTD_DATA_R       (*((volatile uint32_t *)0x400073FC))
-#define GPIO_PORTD_DIR_R        (*((volatile uint32_t *)0x40007400))
-#define GPIO_PORTD_IS_R         (*((volatile uint32_t *)0x40007404))
-#define GPIO_PORTD_IBE_R        (*((volatile uint32_t *)0x40007408))
-#define GPIO_PORTD_IEV_R        (*((volatile uint32_t *)0x4000740C))
-#define GPIO_PORTD_IM_R         (*((volatile uint32_t *)0x40007410))
-#define GPIO_PORTD_RIS_R        (*((volatile uint32_t *)0x40007414))
-#define GPIO_PORTD_MIS_R        (*((volatile uint32_t *)0x40007418))
-#define GPIO_PORTD_ICR_R        (*((volatile uint32_t *)0x4000741C))
-#define GPIO_PORTD_AFSEL_R      (*((volatile uint32_t *)0x40007420))
-#define GPIO_PORTD_DR2R_R       (*((volatile uint32_t *)0x40007500))
-#define GPIO_PORTD_DR4R_R       (*((volatile uint32_t *)0x40007504))
-#define GPIO_PORTD_DR8R_R       (*((volatile uint32_t *)0x40007508))
-#define GPIO_PORTD_ODR_R        (*((volatile uint32_t *)0x4000750C))
-#define GPIO_PORTD_PUR_R        (*((volatile uint32_t *)0x40007510))
-#define GPIO_PORTD_PDR_R        (*((volatile uint32_t *)0x40007514))
-#define GPIO_PORTD_SLR_R        (*((volatile uint32_t *)0x40007518))
-#define GPIO_PORTD_DEN_R        (*((volatile uint32_t *)0x4000751C))
-#define GPIO_PORTD_LOCK_R       (*((volatile uint32_t *)0x40007520))
-#define GPIO_PORTD_CR_R         (*((volatile uint32_t *)0x40007524))
-#define GPIO_PORTD_AMSEL_R      (*((volatile uint32_t *)0x40007528))
-#define GPIO_PORTD_PCTL_R       (*((volatile uint32_t *)0x4000752C))
-#define GPIO_PORTD_ADCCTL_R     (*((volatile uint32_t *)0x40007530))
-#define GPIO_PORTD_DMACTL_R     (*((volatile uint32_t *)0x40007534))
-//*****************************************************************************
-//
-// GPIO registers (PORTE)
-//
-//*****************************************************************************
-#define GPIO_PORTE_DATA_BITS_R  ((volatile uint32_t *)0x40024000)
-#define GPIO_PORTE_DATA_R       (*((volatile uint32_t *)0x400243FC))
-#define GPIO_PORTE_DIR_R        (*((volatile uint32_t *)0x40024400))
-#define GPIO_PORTE_IS_R         (*((volatile uint32_t *)0x40024404))
-#define GPIO_PORTE_IBE_R        (*((volatile uint32_t *)0x40024408))
-#define GPIO_PORTE_IEV_R        (*((volatile uint32_t *)0x4002440C))
-#define GPIO_PORTE_IM_R         (*((volatile uint32_t *)0x40024410))
-#define GPIO_PORTE_RIS_R        (*((volatile uint32_t *)0x40024414))
-#define GPIO_PORTE_MIS_R        (*((volatile uint32_t *)0x40024418))
-#define GPIO_PORTE_ICR_R        (*((volatile uint32_t *)0x4002441C))
-#define GPIO_PORTE_AFSEL_R      (*((volatile uint32_t *)0x40024420))
-#define GPIO_PORTE_DR2R_R       (*((volatile uint32_t *)0x40024500))
-#define GPIO_PORTE_DR4R_R       (*((volatile uint32_t *)0x40024504))
-#define GPIO_PORTE_DR8R_R       (*((volatile uint32_t *)0x40024508))
-#define GPIO_PORTE_ODR_R        (*((volatile uint32_t *)0x4002450C))
-#define GPIO_PORTE_PUR_R        (*((volatile uint32_t *)0x40024510))
-#define GPIO_PORTE_PDR_R        (*((volatile uint32_t *)0x40024514))
-#define GPIO_PORTE_SLR_R        (*((volatile uint32_t *)0x40024518))
-#define GPIO_PORTE_DEN_R        (*((volatile uint32_t *)0x4002451C))
-#define GPIO_PORTE_LOCK_R       (*((volatile uint32_t *)0x40024520))
-#define GPIO_PORTE_CR_R         (*((volatile uint32_t *)0x40024524))
-#define GPIO_PORTE_AMSEL_R      (*((volatile uint32_t *)0x40024528))
-#define GPIO_PORTE_PCTL_R       (*((volatile uint32_t *)0x4002452C))
-#define GPIO_PORTE_ADCCTL_R     (*((volatile uint32_t *)0x40024530))
-#define GPIO_PORTE_DMACTL_R     (*((volatile uint32_t *)0x40024534))
-
-//*****************************************************************************
-//
-// GPIO registers (PORTF)
-//
-//*****************************************************************************
-#define GPIO_PORTF_DATA_BITS_R  ((volatile uint32_t *)0x40025000)
-#define GPIO_PORTF_DATA_R       (*((volatile uint32_t *)0x400253FC))
-#define GPIO_PORTF_DIR_R        (*((volatile uint32_t *)0x40025400))
-#define GPIO_PORTF_IS_R         (*((volatile uint32_t *)0x40025404))
-#define GPIO_PORTF_IBE_R        (*((volatile uint32_t *)0x40025408))
-#define GPIO_PORTF_IEV_R        (*((volatile uint32_t *)0x4002540C))
-#define GPIO_PORTF_IM_R         (*((volatile uint32_t *)0x40025410))
-#define GPIO_PORTF_RIS_R        (*((volatile uint32_t *)0x40025414))
-#define GPIO_PORTF_MIS_R        (*((volatile uint32_t *)0x40025418))
-#define GPIO_PORTF_ICR_R        (*((volatile uint32_t *)0x4002541C))
-#define GPIO_PORTF_AFSEL_R      (*((volatile uint32_t *)0x40025420))
-#define GPIO_PORTF_DR2R_R       (*((volatile uint32_t *)0x40025500))
-#define GPIO_PORTF_DR4R_R       (*((volatile uint32_t *)0x40025504))
-#define GPIO_PORTF_DR8R_R       (*((volatile uint32_t *)0x40025508))
-#define GPIO_PORTF_ODR_R        (*((volatile uint32_t *)0x4002550C))
-#define GPIO_PORTF_PUR_R        (*((volatile uint32_t *)0x40025510))
-#define GPIO_PORTF_PDR_R        (*((volatile uint32_t *)0x40025514))
-#define GPIO_PORTF_SLR_R        (*((volatile uint32_t *)0x40025518))
-#define GPIO_PORTF_DEN_R        (*((volatile uint32_t *)0x4002551C))
-#define GPIO_PORTF_LOCK_R       (*((volatile uint32_t *)0x40025520))
-#define GPIO_PORTF_CR_R         (*((volatile uint32_t *)0x40025524))
-#define GPIO_PORTF_AMSEL_R      (*((volatile uint32_t *)0x40025528))
-#define GPIO_PORTF_PCTL_R       (*((volatile uint32_t *)0x4002552C))
-#define GPIO_PORTF_ADCCTL_R     (*((volatile uint32_t *)0x40025530))
-#define GPIO_PORTF_DMACTL_R     (*((volatile uint32_t *)0x40025534))
 
 //other important reg
 #define SYSCTL_GPIOHBCTL_R      (*((volatile uint32_t *)0x400FE06C))
@@ -472,89 +288,59 @@
 #define SYSCTL_PRGPIO_R1        0x00000002  // GPIO Port B Peripheral Ready
 #define SYSCTL_PRGPIO_R0        0x00000001  // GPIO Port A Peripheral Ready
 
-//defines for port pin type
-#define GPIO_CNFG_PIN_MOD_DIG           0
-#define GPIO_CNFG_PIN_MOD_ANALOG        1
 
-//defines for portpin Direction
-#define GPIO_CNFG_PIN_DIR_IN            0
-#define GPIO_CNFG_PIN_DIR_OUT           1
+/////////////////////////////////////New Cnfg//////////////////////////
+//define for enable clk port on RCGCGPIO
+#define GPIO_EN_CLK_PORTA       0x01
+#define GPIO_EN_CLK_PORTB       0x02
+#define GPIO_EN_CLK_PORTC       0x04
+#define GPIO_EN_CLK_PORTD       0x08
+#define GPIO_EN_CLK_PORTE       0x10
+#define GPIO_EN_CLK_PORTF       0x20
 
-//defines for Port pin Attach Pad Cntrl (pull up,pulldown,opendrain)
-#define GPIO_CNFG_PD_CTRL_NONE         0   //leave power up default val
-#define GPIO_CNFG_PD_CTRL_PUR          1  //pull up resist
-#define GPIO_CNFG_PD_CTRL_PDR          2  //pull dwn resist
-#define GPIO_CNFG_PD_CTRL_OD           3  //open Drain
+//define port id
+#define GPIO_PORTA_ID          0
+#define GPIO_PORTB_ID          1
+#define GPIO_PORTC_ID          2
+#define GPIO_PORTD_ID          3
+#define GPIO_PORTE_ID          4
+#define GPIO_PORTF_ID          5
+//define pin num
+#define GPIO_PIN0              0x1
+#define GPIO_PIN1              0x2
+#define GPIO_PIN2              0x4
+#define GPIO_PIN3              0x8
+#define GPIO_PIN4              0x10
+#define GPIO_PIN5              0x20
+#define GPIO_PIN6              0x40
+#define GPIO_PIN7              0x80
+//define action/reg to config
+#define GPIO_PCTL_DEFAULT      0
+#define GPIO_ENABLE_PORT       1    //ena clk unlock port en spec pin in cr
+#define GPIO_DIR               2
+#define GPIO_EN_DIG            3
+#define GPIO_EN_PUR            4
+#define GPIO_EN_PDN            5
+#define GPIO_EN_ODN            6
+#define GPIO_EN_ANLG           7
+#define GPIO_SET_ALT_FNC       8
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION MACROS
  *********************************************************************************************************************/
 void GPIO_Init(void);
-
+void GPIO_PortCNFG(uint8_t PortID, uint8_t CnfgAction, uint8_t CnfgPins,uint32_t PCTL_Cnfg);
 /**********************************************************************************************************************
  *  GLOBAL DATA TYPES AND STRUCTURES
  *********************************************************************************************************************/
-typedef volatile uint32_t  GPIO_Port_Id; //which port
-/*typedef struct {
-	
-	uint8_t PinType;
-	uint8_t PinDir;
-	uint8_t PinPadCtrl;
-  uint8_t PinCurrent;
-  uint8_t PinMode; 	
-}GPIO_PinConfig;
-
-typedef struct {
-	GPIO_Port_Id PortAddr;
-  GPIO_PinConfig  Pins[8];	
-}GPIO_PortConfig;
-
-GPIO_PortConfig  Portf_CNFG;
-*/
-typedef struct{
-	GPIO_Port_Id BaseAddr;
-	GPIO_Port_Id Dir_Reg;
-	GPIO_Port_Id Data_Reg;
-	
-}Port;
-Port PortFCnfg;
-//GPIOF->DATA=0x00;
-
 
 /**********************************************************************************************************************
  *  GLOBAL DATA PROTOTYPES
  *********************************************************************************************************************/
-//port config array on pin config
-/*GPIO_Config PortA_Config[7];
-GPIO_Config PortB_Config[7];
-GPIO_Config PortC_Config[7];
-GPIO_Config PortD_Config[7];
-GPIO_Config PortE_Config[7];
-GPIO_Config PortF_Config[7];*/
-/*GPIO_Config Port_Config[][7]={
-	Port_Config[0][0].PinType=0,
-};*/
-
-//Set confg for ports Here Port_Config[0] = PortA .....Port_Config[5]=PortF
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
-/*void GPIO_Init_Port_Cnfg(GPIO_Config* Port_Config)
-{
-	uint8_t u8PinInd;
-//get port Base Adrr
-//enable clk gating
-//unlock port
-//confg port
-	for(u8PinInd=0;u8PinInd<8;u8PinInd++)	
-	//cofig pad cntrl
-	switch(GPIO_Config[u8PinInd].PadCntrl)
-	{
-	case (GPIO_CNFG_PD_CTRL_PUR):
-		GPIO
 
-	}
-}	*/
 #endif  /* FILE_NAME_H */
 
 /**********************************************************************************************************************
