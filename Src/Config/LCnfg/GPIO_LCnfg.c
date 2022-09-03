@@ -4,7 +4,7 @@
  *        \file  GPIO_LCnfg.c
  *        \brief  
  *
- *      \details  
+ *      \details  API functions to take GPIO configuration from user 
  *
  *
  *********************************************************************************************************************/
@@ -38,19 +38,18 @@
  *  GLOBAL FUNCTIONS
  *********************************************************************************************************************/
 /******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
+* \Syntax          : void GPIO_Init(void)        
+* \Description     : initialize GPIO                                    
 *                                                                             
 * \Sync\Async      : Synchronous                                               
 * \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Describtion                     
+* \Parameters (in) : None                     
 * \Parameters (out): None                                                      
-* \Return value:   : Std_ReturnType  E_OK
-*                                    E_NOT_OK                                  
+* \Return value:   : None                                  
 *******************************************************************************/
 void GPIO_Init(void)
 	{
-//enable portf clk ,unlock port , commint pins 0->5
+//enable portf clk ,unlock port , commet pins 0->5
 		GPIO_PortCNFG(GPIO_PORTF_ID,GPIO_ENABLE_PORT,GPIO_PIN0|GPIO_PIN1|GPIO_PIN2|GPIO_PIN3|GPIO_PIN4|GPIO_PIN5,GPIO_PCTL_DEFAULT);
 //set in DEN reg pins0->5 as digital		
 		GPIO_PortCNFG(GPIO_PORTF_ID,GPIO_EN_DIG,GPIO_PIN0|GPIO_PIN1|GPIO_PIN2|GPIO_PIN3|GPIO_PIN4|GPIO_PIN5,GPIO_PCTL_DEFAULT);
@@ -60,15 +59,22 @@ void GPIO_Init(void)
 		GPIO_PortCNFG(GPIO_PORTF_ID,GPIO_EN_PUR,GPIO_PIN0|GPIO_PIN4,GPIO_PCTL_DEFAULT);
 	}
 	/******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
-*                                                                             
+* \Syntax          : void GPIO_PortCNFG(PortID,ConfigurationAction,conf Pins , Pcontrol register config)        
+* \Description     : Configure GPIO Port passed to it with user configuration action                                   	
 * \Sync\Async      : Synchronous                                               
 * \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Description
+* \Parameters (in) : PortID: Port Id for port to be configured
+*                    CnfgPins : Pin numbers
+*                    CnfgAction : user selection form one of predefine gpio configuration action
+*                    
+*                    GPIO_ENABLE_PORT : enable port clck , unlock port, commit pins
+*	                   GPIO_DIR:  Set pin direction IN/OUT , direction config is set from CnfgPins
+*                    GPIO_EN_DIG: Digital enable
+*                    GPIO_SET_ALT_FNC: set alternative function for pin	,Alternative fnc select is passed 
+*	                    through "PCTL_Cnfg"
+*	                   PCTL_Cnfg: contains Alternative fnc select if cofgAction is GPIO_SET_ALT_FNC else set to 0  
 * \Parameters (out): None                                                      
-* \Return value:   : Std_ReturnType  E_OK
-*                                    E_NOT_OK                                  
+* \Return value:   : None                                   
 *******************************************************************************/
 	void GPIO_PortCNFG(uint8_t PortID, uint8_t CnfgAction, uint8_t CnfgPins,uint32_t PCTL_Cnfg)
 	{

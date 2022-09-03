@@ -2,10 +2,10 @@
 
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  <Write File Name>
+ *         File:  <GPIO_DRIVER.h>
  *       Module:  -
  *
- *  Description:  <Write File DESCRIPTION here>     
+ *  Description:  <header file for GPIO >     
  *  
  *********************************************************************************************************************/
 #ifndef __GPIO_DRIVER_H__

@@ -2,10 +2,10 @@
 
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  <Write File Name>
+ *         File:  <NVIC_DRIVER.h>
  *       Module:  -
  *
- *  Description:  <Write File DESCRIPTION here>     
+ *  Description:  <Header file for NVIC>     
  *  
  *********************************************************************************************************************/
 #ifndef __NVIC_DRIVER_H__

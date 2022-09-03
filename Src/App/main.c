@@ -15,6 +15,18 @@
 //#define LAST_COUNT_TIME  0xfffffe  //last count 999.938ms instead of 1000ms to make up for procesing overhead 
 uint8_t  Load_Timer_State;
 void Toggle_Led(void);
+/******************************************************************************
+* \Syntax          : void Toggle_Led(void)        
+* \Description     : Toggle user defined LED On /OFF
+*                     turns led on for "ON_TIMER" seconds then turns led off
+*                     for "OFF_TIMER" seconds										 
+*                                                                             
+* \Sync\Async      : Synchronous                                               
+* \Reentrancy      : Non Reentrant                                             
+* \Parameters (in) : None                     
+* \Parameters (out): None                                                      
+* \Return value:   : None                                 
+*******************************************************************************/
 
 void Toggle_Led()
 {

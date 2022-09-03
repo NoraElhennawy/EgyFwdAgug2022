@@ -38,12 +38,14 @@
  *  GLOBAL FUNCTIONS
  *********************************************************************************************************************/
 /******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
+* \Syntax          : void DIO_Write_PIN(DIO_Port_Id u32Port ,DIO_ChannelType u16PinNum,DIO_Pin_Val u8PinValue)        
+* \Description     : set Dio pin with pin num  "u16PinNum" on port  "u32Port"  with   u8PinValue                            
 *                                                                             
 * \Sync\Async      : Synchronous                                               
 * \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Describtion                     
+* \Parameters (in) : u32Port    Dio Port Addr
+*                    u16PinNum  Dio Pin number
+*                    u8PinValue Dio Value  
 * \Parameters (out): None                                                      
 * \Return value:   : Std_ReturnType  E_OK
 *                                    E_NOT_OK                                  
@@ -65,15 +67,15 @@ void DIO_Write_PIN (DIO_Port_Id u32Port ,DIO_ChannelType u16PinNum,DIO_Pin_Val u
 	}
 }
 /******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
+* \Syntax          : void DIO_Write_Port(DIO_Port_Id u32Port,DIO_Port_Data u8PortData )        
+* \Description     : write u8PortData on port  "u32Port"                                      
 *                                                                             
 * \Sync\Async      : Synchronous                                               
 * \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Describtion                     
+* \Parameters (in) : u32Port    port addr
+*                    u8PortData port data
 * \Parameters (out): None                                                      
-* \Return value:   : Std_ReturnType  E_OK
-*                                    E_NOT_OK                                  
+* \Return value:   : void                              
 *******************************************************************************/
 void DIO_Write_Port(DIO_Port_Id u32Port,DIO_Port_Data u8PortData )
 {
@@ -83,15 +85,14 @@ void DIO_Write_Port(DIO_Port_Id u32Port,DIO_Port_Data u8PortData )
 	* Data_Port_Ptr = u8PortData;
 }
 /******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
+* \Syntax          : DIO_Port_Data DIO_Read_Port(DIO_Port_Id u32Port)        
+* \Description     : Read port pins for  "u32Port"                                  
 *                                                                             
 * \Sync\Async      : Synchronous                                               
 * \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Describtion                     
+* \Parameters (in) : u32Port    port addr                     
 * \Parameters (out): None                                                      
-* \Return value:   : Std_ReturnType  E_OK
-*                                    E_NOT_OK                                  
+* \Return value:   : None                                 
 *******************************************************************************/
 DIO_Port_Data DIO_Read_Port(DIO_Port_Id u32Port)
 {
@@ -103,15 +104,15 @@ DIO_Port_Data DIO_Read_Port(DIO_Port_Id u32Port)
 	return (u8PortData);
 }
 /******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
+* \Syntax          : DIO_Pin_Val DIO_Read_Pin(DIO_Port_Id u32Port,DIO_ChannelType u16PinNum )        
+* \Description     : Read pin value for"u16PinNum" pin from "u32Port" port                                    
 *                                                                             
 * \Sync\Async      : Synchronous                                               
-* \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Describtion                     
+* \Reentrancy      : Reentrant                                             
+* \Parameters (in) : u32Port   Port Addr 
+*                    u16PinNum Pin Number
 * \Parameters (out): None                                                      
-* \Return value:   : Std_ReturnType  E_OK
-*                                    E_NOT_OK                                  
+* \Return value:   : None                                 
 *******************************************************************************/
 DIO_Pin_Val DIO_Read_Pin(DIO_Port_Id u32Port,DIO_ChannelType u16PinNum )
 {
@@ -127,15 +128,15 @@ DIO_Pin_Val DIO_Read_Pin(DIO_Port_Id u32Port,DIO_ChannelType u16PinNum )
 }
 
 /******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
+* \Syntax          : void DIO_Toggle_PIN (DIO_Port_Id u32Port ,DIO_ChannelType u16PinNum)        
+* \Description     : Toggle "u16PinNum" Pin on "u32Port" Port                                    
 *                                                                             
 * \Sync\Async      : Synchronous                                               
 * \Reentrancy      : Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Describtion                     
+* \Parameters (in) : u32Port   Port Addr   
+*                    u16PinNum Pin number 
 * \Parameters (out): None                                                      
-* \Return value:   : Std_ReturnType  E_OK
-*                                    E_NOT_OK                                  
+* \Return value:   : Void                                  
 *******************************************************************************/
 void DIO_Toggle_PIN (DIO_Port_Id u32Port ,DIO_ChannelType u16PinNum)
 {
@@ -151,22 +152,6 @@ void DIO_Toggle_PIN (DIO_Port_Id u32Port ,DIO_ChannelType u16PinNum)
 		* Data_Port_Ptr = (u16PinNum>>2);
 	
 }
-/******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
-*                                                                             
-* \Sync\Async      : Synchronous                                               
-* \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Describtion                     
-* \Parameters (out): None                                                      
-* \Return value:   : Std_ReturnType  E_OK
-*                                    E_NOT_OK                                  
-*******************************************************************************/
-/*Std_ReturnType FunctionName(AnyType parameterName)
-{
-	
-	
-}*/
 
 /**********************************************************************************************************************
  *  END OF FILE: FileName.c

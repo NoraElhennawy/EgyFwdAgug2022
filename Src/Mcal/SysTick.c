@@ -2,10 +2,10 @@
 
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  <Write File Name>
+ *         File:  <SysTick.c>
  *       Module:  -
  *
- *  Description:  <Write File DESCRIPTION here>     
+ *  Description:  API functions for systick timer : initilsize, delay, attach call back function    
  *  
  *********************************************************************************************************************/
 
@@ -40,15 +40,14 @@ SysTickCallBckFnPtr SysTickIntHandler;
  *  GLOBAL FUNCTIONS
  *********************************************************************************************************************/
 /******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
+* \Syntax          : void SysTick_Init(void)        
+* \Description     : Initialize systick driver                                   
 *                                                                             
 * \Sync\Async      : Synchronous                                               
 * \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Describtion                     
+* \Parameters (in) : None                    
 * \Parameters (out): None                                                      
-* \Return value:   : Std_ReturnType  E_OK
-*                                    E_NOT_OK                                  
+* \Return value:   : None                                  
 *******************************************************************************/
 void SysTick_Init(void)
 {
@@ -58,15 +57,14 @@ void SysTick_Init(void)
 	SysTickExtendCnt=0;
 }
 /******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
+* \Syntax          : void SysTick_Delay_Sec(DelaySec)        
+* \Description     : API function to issue systick interrupt every DelaySec                                   
 *                                                                             
 * \Sync\Async      : Synchronous                                               
 * \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Describtion                     
+* \Parameters (in) : DelaySec : delay in seconds                      
 * \Parameters (out): None                                                      
-* \Return value:   : Std_ReturnType  E_OK
-*                                    E_NOT_OK                                  
+* \Return value:   : None                                  
 *******************************************************************************/
 void SysTick_Delay_Sec(uint8_t u8DelaySec)
 {
@@ -74,12 +72,12 @@ void SysTick_Delay_Sec(uint8_t u8DelaySec)
 	SysTickExtendCnt=u8DelaySec;
 }
 /******************************************************************************
-* \Syntax          : Std_ReturnType FunctionName(AnyType parameterName)        
-* \Description     : Describe this service                                    
+* \Syntax          : void SysTick_AttachCallbackFn(SysTickCallBckFnPtr FnPtr)        
+* \Description     : Attach user call back function to be excuted in systick handler                                    
 *                                                                             
 * \Sync\Async      : Synchronous                                               
 * \Reentrancy      : Non Reentrant                                             
-* \Parameters (in) : parameterName   Parameter Describtion                     
+* \Parameters (in) : FnPtr   pointer to  user call back function                     
 * \Parameters (out): None                                                      
 * \Return value:   : Std_ReturnType  E_OK
 *                                    E_NOT_OK                                  
