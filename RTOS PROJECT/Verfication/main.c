@@ -161,7 +161,7 @@ void Task1_Task( void * pvParameters )
 	 const TickType_t xFrequency=TRANS_TASK_PERIOD;
 	//Init LastWake var
 	 LastWakeTime =xTaskGetTickCount();
-CalcTimeDemand();
+//CalcTimeDemand();
 		Task1_Msg.ucMessageID =MSG_FRM_TRANS_TASK;
 	  strcpy(Task1_Msg.ucData,"Transmitter Task\n");
 	  pxPointerToxMessage=&Task1_Msg;
@@ -222,10 +222,10 @@ void UART_Task( void * pvParameters )
 							switch(pxRxedPointer->ucMessageID)
 							{
 								case MSG_FRM_TRANS_TASK:
-								case MSG_FRM_B1_R_EDGE: //Not clear in Rubric wht to do if B1 rising edge detect for know send on uart
-								case MSG_FRM_B1_F_EDGE: //Not clear in Rubric wht to do if B1 falling edge detect for know send on uart									
-								case MSG_FRM_B2_R_EDGE: //Not clear in Rubric wht to do if B2 rising edge detect for know send on uart
-								case MSG_FRM_B2_F_EDGE: //Not clear in Rubric wht to do if B2 falling edge detect for know send on uart									
+								case MSG_FRM_B1_R_EDGE: 
+								case MSG_FRM_B1_F_EDGE: 
+								case MSG_FRM_B2_R_EDGE: 
+								case MSG_FRM_B2_F_EDGE: 
 
 									vSerialPutString((const signed char*)pxRxedPointer->ucData,strlen(pxRxedPointer->ucData));
 								break;
@@ -422,7 +422,7 @@ int main( void )
                     "LOAD1 SIM. TASK",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &LD1_SIM_Task_Handler ,LD1_TASK_PERIOD );      /* Used to pass out the created task's handle. */
 
 	 xTaskCreatePeriodic(
@@ -430,7 +430,7 @@ int main( void )
                     "LOAD2 SIM. TASK",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &LD2_SIM_Task_Handler,LD2_TASK_PERIOD );      /* Used to pass out the created task's handle. */
 
   	
@@ -439,7 +439,7 @@ int main( void )
                     "Periodic_Trans",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &Task1_Task_Handler,TRANS_TASK_PERIOD );      /* Used to pass out the created task's handle. */
 
 	xTaskCreatePeriodic(
@@ -447,14 +447,14 @@ int main( void )
                     "UART_Task",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &UART_Task_Handler,UART_TASK_PERIOD );      /* Used to pass out the created task's handle. */
 	xTaskCreatePeriodic(
                     BUTTON1_Task,       /* Function that implements the task. */
                     "Button1 Task",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &BUTTON1_Task_Handler,B1_TASK_PERIOD );      /* Used to pass out the created task's handle. */
 
 	xTaskCreatePeriodic(
@@ -462,7 +462,7 @@ int main( void )
                     "Button2 Task",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &BUTTON2_Task_Handler ,B2_TASK_PERIOD);      /* Used to pass out the created task's handle. */
 								
 	/* Now all the tasks have been started - start the scheduler.
@@ -520,8 +520,8 @@ static void prvSetupHardware( void )
 }
 void vApplicationTickHook(void)
 {
-	//GPIO_write(PORT_0,PIN1,PIN_IS_LOW);
-	//GPIO_write(PORT_0,PIN1,PIN_IS_HIGH);
+	GPIO_write(PORT_0,PIN0,PIN_IS_LOW);
+	GPIO_write(PORT_0,PIN0,PIN_IS_HIGH);
 }
 
 void vApplicationIdleHook(void)
