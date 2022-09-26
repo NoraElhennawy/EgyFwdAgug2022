@@ -56,6 +56,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 /* Scheduler includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -81,14 +82,7 @@
 #define B2_CNFG_PIN   PIN2		//PIN # BUTTON2
 
 //RTOS ///
-//#define TRACE_TASKS_WITH_GPIO  1
-#ifdef TRACE_TASKS_WITH_GPIO
-//GPIO PINS used to Trace Tasks
-#define IDLE_TRACE_PIN               PIN4
-#define LD1_TRACE_PIN                PIN5
-#define LD2_TRACE_PIN                PIN6
-#define TRANSMIT_TRACE_PIN           PIN7
-#endif
+
 /* Define a variable of type struct AMMessage.  The examples below demonstrate
 how to pass the whole variable through the queue, and as the structure is
 moderately large, also how to pass a reference to the variable through a queue. */
@@ -122,13 +116,22 @@ TaskHandle_t LD2_SIM_Task_Handler =NULL;
 #define B1_TASK_PERIOD     50
 #define B2_TASK_PERIOD     50 
 #define UART_TASK_PERIOD   20
-
+//Task Statistics
+unsigned int LD1_InTime=0,LD1_OutTime=0,LD1_TotalTime=0;
+unsigned int LD2_InTime=0,LD2_OutTime=0,LD2_TotalTime=0;
+unsigned int B1_InTime=0,B1_OutTime=0,B1_TotalTime=0;
+unsigned int B2_InTime=0,B2_OutTime=0,B2_TotalTime=0;
+unsigned int Trans_InTime=0,Trans_OutTime=0,Trans_TotalTime=0;
+unsigned int UART_InTime=0,UART_OutTime=0,UART_TotalTime=0;
+unsigned int TotalTime=0;
+float CPU_Usage=0;
 /*
  * Configure the processor for use with the Keil demo board.  This is very
  * minimal as most of the setup is managed by the settings in the project
  * file.
  */
 static void prvSetupHardware( void );
+void CalcTimeDemand(void);
 /*-----------------------------------------------------------*/
 void vCreateQueues( void )
 {
@@ -158,7 +161,7 @@ void Task1_Task( void * pvParameters )
 	 const TickType_t xFrequency=TRANS_TASK_PERIOD;
 	//Init LastWake var
 	 LastWakeTime =xTaskGetTickCount();
-
+//CalcTimeDemand();
 		Task1_Msg.ucMessageID =MSG_FRM_TRANS_TASK;
 	  strcpy(Task1_Msg.ucData,"Transmitter Task\n");
 	  pxPointerToxMessage=&Task1_Msg;
@@ -213,16 +216,16 @@ void UART_Task( void * pvParameters )
 						variable, after this call pxRxedPointer will point to xMessage. */
 						if( xQueueReceive( xPointerQueue,
 															 &( pxRxedPointer ),
-															 ( TickType_t ) 10 ) == pdPASS )
+															 ( TickType_t ) 0 ) == pdPASS )
 						{
 							 /* *pxRxedPointer now points to xMessage. */
 							switch(pxRxedPointer->ucMessageID)
 							{
 								case MSG_FRM_TRANS_TASK:
-								case MSG_FRM_B1_R_EDGE: //Not clear in Rubric wht to do if B1 rising edge detect for know send on uart
-								case MSG_FRM_B1_F_EDGE: //Not clear in Rubric wht to do if B1 falling edge detect for know send on uart									
-								case MSG_FRM_B2_R_EDGE: //Not clear in Rubric wht to do if B2 rising edge detect for know send on uart
-								case MSG_FRM_B2_F_EDGE: //Not clear in Rubric wht to do if B2 falling edge detect for know send on uart									
+								case MSG_FRM_B1_R_EDGE: 
+								case MSG_FRM_B1_F_EDGE: 
+								case MSG_FRM_B2_R_EDGE: 
+								case MSG_FRM_B2_F_EDGE: 
 
 									vSerialPutString((const signed char*)pxRxedPointer->ucData,strlen(pxRxedPointer->ucData));
 								break;
@@ -359,11 +362,8 @@ void LD1_SIM_Task( void * pvParameters )
 		const TickType_t xFrequency=LD1_TASK_PERIOD;
 	//Init LastWake var
 	LastWakeTime =xTaskGetTickCount();
-	#ifdef TRACE_TASKS_WITH_GPIO
-		GPIO_write(PORT_0,LD1_TRACE_PIN,PIN_IS_HIGH);
-		GPIO_write(PORT_0,IDLE_TRACE_PIN,PIN_IS_LOW);
-	#endif
-	vTaskSetApplicationTaskTag( NULL, (void*) LD1_TASK_ID );
+
+//	vTaskSetApplicationTaskTag( NULL,(void*)LD1_TASK_ID );
 	/* The parameter value is expected to be 1 as 1 is passed in the
     pvParameters value in the call to xTaskCreate() below.*/ 
     configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
@@ -375,18 +375,11 @@ void LD1_SIM_Task( void * pvParameters )
 				{
 					i=i;
 				}
-#ifdef TRACE_TASKS_WITH_GPIO
-				GPIO_write(PORT_0,LD1_TRACE_PIN,PIN_IS_LOW);
-#endif				
-				vTaskDelayUntil(&LastWakeTime,xFrequency);	
-#ifdef TRACE_TASKS_WITH_GPIO
-				GPIO_write(PORT_0,LD1_TRACE_PIN,PIN_IS_HIGH);
-		//		GPIO_write(PORT_0,PIN6,PIN_IS_LOW);
-			/*Idle Task 0ff*/
-				GPIO_write(PORT_0,IDLE_TRACE_PIN,PIN_IS_LOW);			
-#endif			
+				
+				vTaskDelayUntil(&LastWakeTime,xFrequency);				
     }
 	}
+
 void LD2_SIM_Task( void * pvParameters )
 {
    long i;
@@ -394,11 +387,8 @@ void LD2_SIM_Task( void * pvParameters )
 		const TickType_t xFrequency=LD2_TASK_PERIOD;
 	//Init LastWake var
 	LastWakeTime =xTaskGetTickCount();
-#ifdef TRACE_TASKS_WITH_GPIO	
-	GPIO_write(PORT_0,PIN6,PIN_IS_HIGH);
-	GPIO_write(PORT_0,IDLE_TRACE_PIN,PIN_IS_LOW);
-#endif	
-	vTaskSetApplicationTaskTag( NULL, (void*) LD2_TASK_ID );
+
+	//vTaskSetApplicationTaskTag( NULL,(void*)LD2_TASK_ID );
 	/* The parameter value is expected to be 1 as 1 is passed in the
     pvParameters value in the call to xTaskCreate() below.*/ 
     configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
@@ -410,16 +400,8 @@ void LD2_SIM_Task( void * pvParameters )
 				{
 					i=i;
 				}
-#ifdef TRACE_TASKS_WITH_GPIO				
-				GPIO_write(PORT_0,PIN6,PIN_IS_LOW);
-#endif				
-				vTaskDelayUntil(&LastWakeTime,xFrequency);	
-#ifdef TRACE_TASKS_WITH_GPIO				
-				GPIO_write(PORT_0,PIN6,PIN_IS_HIGH);
-				//GPIO_write(PORT_0,LD1_TRACE_PIN,PIN_IS_LOW);
-			/*Idle Task 0ff*/
-				GPIO_write(PORT_0,IDLE_TRACE_PIN,PIN_IS_LOW);			
-#endif			
+				
+				vTaskDelayUntil(&LastWakeTime,xFrequency);			
     }
 	}
 /*
@@ -431,37 +413,33 @@ int main( void )
 {
 	/* Setup the hardware for use with the Keil demo board. */
 	prvSetupHardware();
-	#ifdef TRACE_TASKS_WITH_GPIO
-	GPIO_write(PORT_0,LD1_TRACE_PIN,PIN_IS_LOW);
-	GPIO_write(PORT_0,PIN6,PIN_IS_LOW);
-	#endif
+//	CalcTimeDemand();
   /* Create Queues first here */
 	vCreateQueues();
-//#ifdef NORMAL_PROCESS
+  /* Create the task, storing the handle. */
 	 xTaskCreatePeriodic(
                     LD1_SIM_Task,       /* Function that implements the task. */
                     "LOAD1 SIM. TASK",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    3,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &LD1_SIM_Task_Handler ,LD1_TASK_PERIOD );      /* Used to pass out the created task's handle. */
-//#endif
+
 	 xTaskCreatePeriodic(
                     LD2_SIM_Task,       /* Function that implements the task. */
                     "LOAD2 SIM. TASK",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &LD2_SIM_Task_Handler,LD2_TASK_PERIOD );      /* Used to pass out the created task's handle. */
 
-  /* Create the task, storing the handle. */
-#ifdef NORMAL_PROCESS	
+  	
   xTaskCreatePeriodic(
                     Task1_Task,       /* Function that implements the task. */
                     "Periodic_Trans",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &Task1_Task_Handler,TRANS_TASK_PERIOD );      /* Used to pass out the created task's handle. */
 
 	xTaskCreatePeriodic(
@@ -469,14 +447,14 @@ int main( void )
                     "UART_Task",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &UART_Task_Handler,UART_TASK_PERIOD );      /* Used to pass out the created task's handle. */
 	xTaskCreatePeriodic(
                     BUTTON1_Task,       /* Function that implements the task. */
                     "Button1 Task",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &BUTTON1_Task_Handler,B1_TASK_PERIOD );      /* Used to pass out the created task's handle. */
 
 	xTaskCreatePeriodic(
@@ -484,9 +462,9 @@ int main( void )
                     "Button2 Task",          /* Text name for the task. */
                     100,      /* Stack size in words, not bytes. */
                     ( void * ) 0,    /* Parameter passed into the task. */
-                    2,/* Priority at which the task is created. */
+                    0,/* Priority at which the task is created. */
                     &BUTTON2_Task_Handler ,B2_TASK_PERIOD);      /* Used to pass out the created task's handle. */
-#endif									
+								
 	/* Now all the tasks have been started - start the scheduler.
 
 	NOTE : Tasks run in system mode and the scheduler runs in Supervisor mode.
@@ -494,8 +472,15 @@ int main( void )
 	called.  The demo applications included in the FreeRTOS.org download switch
 	to supervisor mode prior to main being called.  If you are not using one of
 	these demo application projects then ensure Supervisor mode is used here. */
-	vTaskStartScheduler();
 
+//set task tag here to ensure intial task work is plotted
+vTaskSetApplicationTaskTag( LD1_SIM_Task_Handler,(void*)LD1_TASK_ID );
+vTaskSetApplicationTaskTag( LD2_SIM_Task_Handler,(void*)LD2_TASK_ID );
+vTaskSetApplicationTaskTag(BUTTON1_Task_Handler,(void*)B1_TASK_ID);
+vTaskSetApplicationTaskTag(BUTTON2_Task_Handler,(void*)B2_TASK_ID);										
+vTaskSetApplicationTaskTag(Task1_Task_Handler,(void *)TRANS_TASK_ID);
+vTaskSetApplicationTaskTag( UART_Task_Handler,(void*)UART_TASK_ID );
+vTaskStartScheduler();
 	/* Should never reach here!  If you do then there was not enough heap
 	available for the idle task to be created. */
 	for( ;; );
@@ -512,7 +497,7 @@ void timer1Reset(void)
 /* Function to initialize and start timer 1 */
 static void configTimer1(void)
 {
-	T1PR = 1000;
+	T1PR = 1000;//(main_freq/1000)
 	T1TCR |= 0x1;
 }
 
@@ -533,20 +518,39 @@ static void prvSetupHardware( void )
 	/* Setup the peripheral bus to be the same as the PLL output. */
 	VPBDIV = mainBUS_CLK_FULL;
 }
-/*void vApplicationTickHook(void)
+void vApplicationTickHook(void)
 {
-	GPIO_write(PORT_0,PIN1,PIN_IS_LOW);
-	GPIO_write(PORT_0,PIN1,PIN_IS_HIGH);
-}*/
+	GPIO_write(PORT_0,PIN0,PIN_IS_LOW);
+	GPIO_write(PORT_0,PIN0,PIN_IS_HIGH);
+}
 
 void vApplicationIdleHook(void)
 {
-	#ifdef TRACE_TASKS_WITH_GPIO
-	//GPIO_write(PORT_0,PIN3,PIN_IS_LOW);
-	GPIO_write(PORT_0,IDLE_TRACE_PIN,PIN_IS_HIGH);
-	//GPIO_write(PORT_0,LD1_TRACE_PIN,PIN_IS_LOW);
-	//GPIO_write(PORT_0,PIN6,PIN_IS_LOW);
-	#endif
+
+}
+void CalcTimeDemand(void)
+{
+	int i,j,k;
+	float TaskPeriodList[6]={10,20,50,50,100,100};
+	float TaskExeTimeList[6]={5,0.018,0.017,0.017,12,0.023};
+	float w; 
+	char RString[20];
+	
+	for(j=0;j<6;j++)
+	{  
+		w=0;
+		for(i=0;i<(TaskPeriodList[j]);i++)
+		{
+			w=TaskExeTimeList[j];
+			for(k=0;k<=(j-1);k++)
+			{
+				w+=(ceil((i+1)/TaskPeriodList[k])*TaskExeTimeList[k]);
+			}
+			sprintf(RString,"w[%d] = %5.5f \n",i,w);
+			vSerialPutString((const signed char*)RString,strlen((const char*)RString));
+			
+		}
+	}
 }
 
 /*-----------------------------------------------------------*/
