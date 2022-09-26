@@ -1246,7 +1246,11 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
 
     if( xSchedulerRunning != pdFALSE )
     {
-        /* If the created task is of a higher priority than the current task
+				#if (configUSE_EDF_SCHEDULER==1)	
+        if((pxCurrentTCB->xStateListItem.xItemValue)<(pxNewTCB->xStateListItem.xItemValue))//if created task is on nearer deadline then it should run now
+				  taskYIELD_IF_USING_PREEMPTION();
+			  #else
+			 /* If the created task is of a higher priority than the current task
          * then it should run now. */
         if( pxCurrentTCB->uxPriority < pxNewTCB->uxPriority )//nn check edf
         {
@@ -1256,6 +1260,7 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
         {
             mtCOVERAGE_TEST_MARKER();
         }
+			 #endif
     }
     else
     {
@@ -2959,8 +2964,10 @@ BaseType_t xTaskIncrementTick( void )
                              * only be performed if the unblocked task has a
                              * priority that is equal to or higher than the
                              * currently executing task. */
-													#if (configUSE_EDF_SCHEDULER == 1)//nn request context switch anyway if edf sch. and new task was added to ready list
-													 xSwitchRequired = pdTRUE;
+													#if (configUSE_EDF_SCHEDULER == 1)//nn request context switch  if edf sch. and new task had neare dealine
+
+													if((pxTCB->xStateListItem.xItemValue)<pxCurrentTCB->xStateListItem.xItemValue)
+														xSwitchRequired = pdTRUE;
 													#else
                             if( pxTCB->uxPriority >= pxCurrentTCB->uxPriority )
                             {
@@ -2982,6 +2989,7 @@ BaseType_t xTaskIncrementTick( void )
          * writer has not explicitly turned time slicing off. */
         #if ( ( configUSE_PREEMPTION == 1 ) && ( configUSE_TIME_SLICING == 1 ) )
             {
+							#if (configUSE_EDF_SCHEDULER == 0)
                 if( listCURRENT_LIST_LENGTH( &( pxReadyTasksLists[ pxCurrentTCB->uxPriority ] ) ) > ( UBaseType_t ) 1 )//nn check edf
                 {
                     xSwitchRequired = pdTRUE;
@@ -2990,6 +2998,7 @@ BaseType_t xTaskIncrementTick( void )
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
+							#endif
             }
         #endif /* ( ( configUSE_PREEMPTION == 1 ) && ( configUSE_TIME_SLICING == 1 ) ) */
 
@@ -3429,7 +3438,16 @@ void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem,
      * lists. */
     listREMOVE_ITEM( &( pxUnblockedTCB->xStateListItem ) );
     prvAddTaskToReadyList( pxUnblockedTCB );
-
+		#if (configUSE_EDF_SCHEDULER == 1)//nn
+		if( pxUnblockedTCB->xStateListItem.xItemValue < pxCurrentTCB->xStateListItem.xItemValue )//nn check for dead line
+    {
+        /* The unblocked task has a priority above that of the calling task, so
+         * a context switch is required.  This function is called with the
+         * scheduler suspended so xYieldPending is set so the context switch
+         * occurs immediately that the scheduler is resumed (unsuspended). */
+        xYieldPending = pdTRUE;
+    }
+		#else
     if( pxUnblockedTCB->uxPriority > pxCurrentTCB->uxPriority )//nn check for dead line
     {
         /* The unblocked task has a priority above that of the calling task, so
@@ -3438,6 +3456,7 @@ void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem,
          * occurs immediately that the scheduler is resumed (unsuspended). */
         xYieldPending = pdTRUE;
     }
+		#endif
 }
 /*-----------------------------------------------------------*/
 
@@ -3629,6 +3648,12 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
                  * then a task other than the idle task is ready to execute. */
 							//nn update idle task deadline //another place is at taskincrementtick ??//switchcontext
 					//   		listSET_LIST_ITEM_VALUE( &( ( pxTCB )->xStateListItem ), ( pxTCB)->xTaskPeriod + xTickCount);
+								#if(configUSE_EDF_SCHEDULER==1)
+							  if( listCURRENT_LIST_LENGTH( &(xReadyTasksListEDF) ) > ( UBaseType_t ) 1 )//nn should check edf list
+                {
+                    taskYIELD();
+                }
+							  #else 
                 if( listCURRENT_LIST_LENGTH( &( pxReadyTasksLists[ tskIDLE_PRIORITY ] ) ) > ( UBaseType_t ) 1 )//nn should check edf list
                 {
                     taskYIELD();
@@ -3637,6 +3662,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
                 {
                     mtCOVERAGE_TEST_MARKER();
                 }
+								#endif
             }
         #endif /* ( ( configUSE_PREEMPTION == 1 ) && ( configIDLE_SHOULD_YIELD == 1 ) ) */
 
