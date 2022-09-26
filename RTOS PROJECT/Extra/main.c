@@ -126,7 +126,7 @@ unsigned int UART_InTime=0,UART_OutTime=0,UART_TotalTime=0;
 unsigned int TotalTime=0;
 float CPU_Usage=0;
  //extra  declare task state outside task to avoid limited task stack
-char TaskState[270]; 
+char TaskState[270]; //calculate size from debugging function and watch Buffer size created inside fnc
   
 /*
  * Configure the processor for use with the Keil demo board.  This is very
@@ -396,7 +396,7 @@ void LD2_SIM_Task( void * pvParameters )
    long i;
 	  TickType_t LastWakeTime;
 		const TickType_t xFrequency=LD2_TASK_PERIOD;
-	 // char TaskState[150];
+	 
 	//Init LastWake var
 	LastWakeTime =xTaskGetTickCount();
 
@@ -407,7 +407,7 @@ void LD2_SIM_Task( void * pvParameters )
 		
     for( ;; )
     {
-     //   vTaskList(TaskState);
+     
 				/* Task code goes here. */
 				for(i=0;i<80000;i++)//34000 =5 ms  67000=10ms  //80000=12ms 
 				{
