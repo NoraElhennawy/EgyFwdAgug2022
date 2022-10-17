@@ -1,0 +1,7 @@
+Udacity Advanced Embedded Nano Degree  Project3
+Provide Fully Static Design(Automotive Door Control System Design_Static.pdf)
+Provide Brief screen recording for static design(Static design screen record)
+Provide a Fully Dynamic design(Automotive Door Control System Design_Dynamic.pdf)
+Provide Brief screen recording for static design(Dynamic design screen record)
+
+For two ECUs communicating together to control car lights according to door state, light switch state, and car speed state.
